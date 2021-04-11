@@ -31,7 +31,9 @@
 #include <iostream>
 #include <limits>
 #include <string>
+#include <sstream>
 #include <utility>
+#include <vector>
 
 //------------------------------------------------------------------------------
 
@@ -59,6 +61,8 @@ Options::Options() :
     bits_(16),
     has_bits_(false),
     render_axis_labels_(true),
+    has_waveform_points_(false),
+    waveform_points_(),
     auto_amplitude_scale_(false),
     amplitude_scale_(1.0),
     png_compression_level_(-1) // default
@@ -81,6 +85,7 @@ bool Options::parseCommandLine(int argc, const char* const* argv)
 
     program_name_ = argv[0];
 
+    std::string waveform_points;
     std::string amplitude_scale;
     std::string samples_per_pixel;
 
@@ -154,6 +159,10 @@ bool Options::parseCommandLine(int argc, const char* const* argv)
         po::value<RGBA>(&waveform_color_),
         "wave color (rrggbb[aa])"
     )(
+        "point-color",
+        po::value<RGBA>(&point_color_),
+        "point color (rrggbb[aa])"
+    )(
         "axis-label-color",
         po::value<RGBA>(&axis_label_color_),
         "axis label color (rrggbb[aa])"
@@ -163,6 +172,10 @@ bool Options::parseCommandLine(int argc, const char* const* argv)
     )(
         "with-axis-labels",
         "render waveform image with axis labels (default)"
+    )(
+        "waveform-points",
+        po::value<std::string>(&waveform_points),
+        "point positions ([:]n11,n12,...[:[n21,...]][:[...]])"
     )(
         "amplitude-scale",
         po::value<std::string>(&amplitude_scale)->default_value("1.0"),
@@ -203,16 +216,20 @@ bool Options::parseCommandLine(int argc, const char* const* argv)
         has_border_color_     = hasOptionValue(variables_map, "border-color");
         has_background_color_ = hasOptionValue(variables_map, "background-color");
         has_waveform_color_   = hasOptionValue(variables_map, "waveform-color");
+        has_point_color_      = hasOptionValue(variables_map, "point-color");
         has_axis_label_color_ = hasOptionValue(variables_map, "axis-label-color");
 
         has_input_format_  = hasOptionValue(variables_map, "input-format");
         has_output_format_ = hasOptionValue(variables_map, "output-format");
+
+        has_waveform_points_  = hasOptionValue(variables_map, "waveform-points");
 
         if (input_filename_.empty() && input_format_.empty()) {
             reportError("Must specify either input filename or input format");
             success = false;
         }
         else {
+            handleWaveformPointsOption(waveform_points);
             handleAmplitudeScaleOption(amplitude_scale);
             handleZoomOption(samples_per_pixel);
 
@@ -240,6 +257,39 @@ bool Options::parseCommandLine(int argc, const char* const* argv)
     }
 
     return success;
+}
+
+//------------------------------------------------------------------------------
+
+void Options::handleWaveformPointsOption(const std::string& option_value)
+{
+    std::istringstream ss(option_value);
+
+    if (has_waveform_points_) {
+        for (std::string channelstring; getline(ss, channelstring, ':');) {
+            waveform_points_.emplace_back();
+
+            std::istringstream cs(channelstring);
+            // remove preceding commas
+            while (cs.peek() == ',') {
+              cs.ignore();
+            }
+            for (std::string pointstring; getline(cs, pointstring, ',');) {
+                std::pair<bool, double> result = MathUtil::parseNumber(pointstring);
+                if (result.first) {
+                    if (result.second >= 0.0) {
+                        waveform_points_.back().push_back(result.second);
+                    }
+                    else {
+                        throwError("Invalid point position: must be a positive number");
+                    }
+                }
+                else {
+                    throwError("Invalid point position: must be a number");
+                }
+            }
+        }
+    }
 }
 
 //------------------------------------------------------------------------------

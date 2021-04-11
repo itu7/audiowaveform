@@ -38,6 +38,7 @@ class WaveformColors
             const RGBA& border_color,
             const RGBA& background_color,
             const RGBA& wave_color,
+            const RGBA& point_color,
             const RGBA& axis_label_color
         );
 
@@ -47,6 +48,7 @@ class WaveformColors
         RGBA border_color;
         RGBA background_color;
         RGBA waveform_color;
+        RGBA point_color;
         RGBA axis_label_color;
 };
 

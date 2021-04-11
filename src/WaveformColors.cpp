@@ -36,10 +36,12 @@ WaveformColors::WaveformColors(
     const RGBA& border,
     const RGBA& background,
     const RGBA& waveform,
+    const RGBA& point,
     const RGBA& axis_label) :
     border_color(border),
     background_color(background),
     waveform_color(waveform),
+    point_color(point),
     axis_label_color(axis_label)
 {
 }
@@ -51,6 +53,7 @@ bool WaveformColors::hasAlpha() const
     return border_color.hasAlpha() ||
            background_color.hasAlpha() ||
            waveform_color.hasAlpha() ||
+           point_color.hasAlpha() ||
            axis_label_color.hasAlpha();
 }
 
@@ -60,6 +63,7 @@ const WaveformColors audacity_waveform_colors(
     {0, 0, 0},
     {214, 214, 214},
     {63, 77, 155},
+    {0, 0, 0},
     {0, 0, 0}
 );
 
@@ -69,6 +73,7 @@ const WaveformColors audition_waveform_colors(
     {157, 157, 157},
     {0, 63, 34},
     {134, 252, 199},
+    {0, 0, 0},
     {190, 190, 190}
 );
 

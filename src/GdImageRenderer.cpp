@@ -38,6 +38,7 @@
 #include <cstring>
 #include <iomanip>
 #include <iostream>
+#include <vector>
 
 //------------------------------------------------------------------------------
 
@@ -53,8 +54,10 @@ GdImageRenderer::GdImageRenderer() :
     border_color_(0),
     background_color_(0),
     waveform_color_(0),
+    point_color_(0),
     axis_label_color_(0),
     render_axis_labels_(true),
+    waveform_points_(),
     auto_amplitude_scale_(false),
     amplitude_scale_(1.0)
 {
@@ -79,6 +82,7 @@ bool GdImageRenderer::create(
     const int image_height,
     const WaveformColors& colors,
     const bool render_axis_labels,
+    const std::vector<std::vector<double>>& waveform_points,
     const bool auto_amplitude_scale,
     const double amplitude_scale)
 {
@@ -133,6 +137,7 @@ bool GdImageRenderer::create(
     samples_per_pixel_    = samples_per_pixel;
     start_index_          = secondsToPixels(start_time);
     render_axis_labels_   = render_axis_labels;
+    waveform_points_      = waveform_points;
     auto_amplitude_scale_ = auto_amplitude_scale;
     amplitude_scale_      = amplitude_scale;
     channels_             = buffer.getChannels();
@@ -161,6 +166,10 @@ bool GdImageRenderer::create(
 
     drawWaveform(buffer);
 
+    if (! waveform_points_.empty()) {
+      drawPoints();
+    }
+
     if (render_axis_labels_) {
         drawTimeAxisLabels();
     }
@@ -187,6 +196,7 @@ void GdImageRenderer::initColors(const WaveformColors& colors)
     border_color_     = createColor(colors.border_color);
     background_color_ = createColor(colors.background_color);
     waveform_color_   = createColor(colors.waveform_color);
+    point_color_      = createColor(colors.point_color);
     axis_label_color_ = createColor(colors.axis_label_color);
 }
 
@@ -336,6 +346,57 @@ void GdImageRenderer::drawTimeAxisLabels() const
         }
 
         secs += axis_label_interval_secs;
+    }
+}
+
+//------------------------------------------------------------------------------
+
+void GdImageRenderer::drawPoints() const
+{
+    // Avoid drawing over the right border
+    const int max_x = render_axis_labels_ ? image_width_ - 1 : image_width_;
+
+    // Avoid drawing over the top and bottom borders
+    const int top_y = render_axis_labels_ ? 1 : 0;
+    const int bottom_y = render_axis_labels_ ? image_height_ - 2 : image_height_ - 1;
+
+    // Avoid drawing over the left border
+    const int start_x = render_axis_labels_ ? 1 : 0;
+
+    int point_channels = static_cast<int>(waveform_points_.size());
+
+    point_channels = point_channels > channels_ ? channels_ : point_channels;
+
+    assert(point_channels > 0);
+
+    int available_height = bottom_y - top_y + 1;
+
+    const int row_height = available_height / point_channels;
+
+    int waveform_top_y = render_axis_labels_ ? 1 : 0;
+
+    for (int channel = 0; channel < point_channels; ++channel) {
+        int waveform_bottom_y;
+
+        if (channel == point_channels - 1) {
+            waveform_bottom_y = waveform_top_y + available_height - 1;
+        }
+        else {
+            waveform_bottom_y = waveform_top_y + row_height;
+        }
+
+        const int height = waveform_bottom_y - waveform_top_y + 1;
+
+        for (int x = start_x; x < max_x; ++x) {
+            for (size_t i = 0; i < waveform_points_.at(channel).size(); ++i) {
+                if (secondsToPixels(waveform_points_.at(channel).at(i)) == x) {
+                    gdImageLine(image_, x, waveform_top_y + height - 1, x, waveform_top_y - 1, point_color_);
+                }
+            }
+        }
+
+        available_height -= row_height + 1;
+        waveform_top_y += row_height + 1;
     }
 }
 

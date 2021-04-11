@@ -150,6 +150,11 @@ When creating a waveform image, specifies the waveform color. If not given,
 the default color used is controlled by the \fB--colors\fR option.
 
 .TP
+.B --point-color\fR <rrggbb[aa]>
+When creating a waveform image, specifies the point color. If not given,
+the default color used is controlled by the \fB--colors\fR option.
+
+.TP
 .B --axis-label-color\fR, \fB-c\fR <rrggbb[aa]>
 When creating a waveform image, specifies the axis labels color. If not given,
 the default color used is controlled by the \fB--colors\fR option.
@@ -158,6 +163,12 @@ the default color used is controlled by the \fB--colors\fR option.
 .B --with-axis-labels\fR, \fB--no-axis-labels\fR (default: with axis labels)
 When creating a waveform image, specifies whether to render axis labels and
 image border.
+
+.TP
+.B --waveform-points\fR point positions ([:]n11,n12,...[:[n21,...]][:[...]])
+When creating a waveform image, specifies the positions of waveform points.
+Different channels can be delimited by a colon (:). If only one channel is given,
+the points are rendered over the whole waveform.
 
 .TP
 .B --amplitude-scale\fR <scale> (default: 1)

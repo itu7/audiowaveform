@@ -33,6 +33,7 @@
 #include <iosfwd>
 #include <string>
 #include <stdexcept>
+#include <vector>
 
 //------------------------------------------------------------------------------
 
@@ -94,14 +95,19 @@ class Options
         const RGBA& getBorderColor() const { return border_color_; }
         const RGBA& getBackgroundColor() const { return background_color_; }
         const RGBA& getWaveformColor() const { return waveform_color_; }
+        const RGBA& getPointColor() const { return point_color_; }
         const RGBA& getAxisLabelColor() const { return axis_label_color_; }
 
         bool hasBorderColor() const { return has_border_color_; }
         bool hasBackgroundColor() const { return has_background_color_; }
         bool hasWaveformColor() const { return has_waveform_color_; }
+        bool hasPointColor() const { return has_point_color_; }
         bool hasAxisLabelColor() const { return has_axis_label_color_; }
 
         bool getRenderAxisLabels() const { return render_axis_labels_; }
+
+        bool hasWaveformPoints() const { return has_waveform_points_; }
+        const std::vector<std::vector<double>> getWaveformPoints() const { return waveform_points_; }
 
         bool isAutoAmplitudeScale() const { return auto_amplitude_scale_; }
         double getAmplitudeScale() const { return amplitude_scale_; }
@@ -117,6 +123,7 @@ class Options
         void reportError(const std::string& message) const;
 
     private:
+        void handleWaveformPointsOption(const std::string& option_value);
         void handleAmplitudeScaleOption(const std::string& option_value);
         void handleZoomOption(const std::string& option_value);
 
@@ -160,14 +167,19 @@ class Options
         RGBA border_color_;
         RGBA background_color_;
         RGBA waveform_color_;
+        RGBA point_color_;
         RGBA axis_label_color_;
 
         bool has_border_color_;
         bool has_background_color_;
         bool has_waveform_color_;
+        bool has_point_color_;
         bool has_axis_label_color_;
 
         bool render_axis_labels_;
+
+        bool has_waveform_points_;
+        std::vector<std::vector<double>> waveform_points_;
 
         bool auto_amplitude_scale_;
         double amplitude_scale_;

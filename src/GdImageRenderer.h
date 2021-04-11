@@ -27,6 +27,7 @@
 //------------------------------------------------------------------------------
 
 #include <gd.h>
+#include <vector>
 
 //------------------------------------------------------------------------------
 
@@ -53,6 +54,7 @@ class GdImageRenderer
             int image_height,
             const WaveformColors& colors,
             bool render_axis_labels,
+            const std::vector<std::vector<double>>& waveform_points,
             bool auto_amplitude_scale,
             double amplitude_scale
         );
@@ -76,6 +78,8 @@ class GdImageRenderer
 
         int getAxisLabelScale() const;
 
+        void drawPoints() const;
+
         template<typename T>
         int secondsToSamples(T seconds) const
         {
@@ -98,9 +102,12 @@ class GdImageRenderer
         int border_color_;
         int background_color_;
         int waveform_color_;
+        int point_color_;
         int axis_label_color_;
 
         bool render_axis_labels_;
+
+        std::vector<std::vector<double>> waveform_points_;
 
         bool auto_amplitude_scale_;
         double amplitude_scale_;

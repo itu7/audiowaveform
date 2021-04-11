@@ -328,6 +328,10 @@ static WaveformColors createWaveformColors(const Options& options)
         colors.waveform_color = options.getWaveformColor();
     }
 
+    if (options.hasPointColor()) {
+        colors.point_color = options.getPointColor();
+    }
+
     if (options.hasAxisLabelColor()) {
         colors.axis_label_color = options.getAxisLabelColor();
     }
@@ -448,6 +452,7 @@ bool OptionHandler::renderWaveformImage(
         options.getImageHeight(),
         colors,
         options.getRenderAxisLabels(),
+        options.getWaveformPoints(),
         options.isAutoAmplitudeScale(),
         options.getAmplitudeScale()))
     {
