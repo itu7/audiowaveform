@@ -171,6 +171,9 @@ bool Options::parseCommandLine(int argc, const char* const* argv)
         "compression",
         po::value<int>(&png_compression_level_)->default_value(-1),
         "PNG compression level: 0 (none) to 9 (best), or -1 (default)"
+    )(
+        "quiet,q",
+        "quiet (show error messages only)"
     );
 
     po::variables_map variables_map;
@@ -186,6 +189,8 @@ bool Options::parseCommandLine(int argc, const char* const* argv)
         if (help_ || version_) {
             return true;
         }
+
+        quiet_ = variables_map.count("quiet") != 0;
 
         split_channels_ = variables_map.count("split-channels") != 0;
 
@@ -228,6 +233,10 @@ bool Options::parseCommandLine(int argc, const char* const* argv)
                 reportError("Invalid compression level: must be from 0 (none) to 9 (best), or -1 (default)");
                 success = false;
             }
+        }
+
+        if (quiet_) {
+            output_stream.rdbuf(NULL);
         }
     }
     catch (const std::runtime_error& e) {

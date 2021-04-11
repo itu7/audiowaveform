@@ -172,7 +172,7 @@ static std::pair<bool, double> getDuration(
         return std::make_pair(false, 0);
     }
 
-    error_stream << "Calculating audio duration...\n";
+    output_stream << "Calculating audio duration...\n";
 
     DurationCalculator duration_calculator;
 
@@ -182,7 +182,7 @@ static std::pair<bool, double> getDuration(
 
     const double duration = duration_calculator.getDuration();
 
-    error_stream << "Duration: " << duration << " seconds\n";
+    output_stream << "Duration: " << duration << " seconds\n";
 
     if (FileUtil::isStdioFilename(input_filename.string().c_str())) {
         if (fseek(stdin, 0, SEEK_SET) != 0) {
@@ -550,7 +550,7 @@ bool OptionHandler::run(const Options& options)
     }
 
     if (success) {
-        error_stream << "Done\n";
+        output_stream << "Done\n";
     }
 
     return success;

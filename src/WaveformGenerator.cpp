@@ -158,10 +158,10 @@ bool WaveformGenerator::init(
     buffer_.setSampleRate(sample_rate);
     buffer_.setChannels(output_channels_);
 
-    error_stream << "Generating waveform data...\n"
-                 << "Samples per pixel: " << samples_per_pixel_ << '\n'
-                 << "Input channels: " << channels_ << '\n'
-                 << "Output channels: " << output_channels_ << '\n';
+    output_stream << "Generating waveform data...\n"
+                  << "Samples per pixel: " << samples_per_pixel_ << '\n'
+                  << "Input channels: " << channels_ << '\n'
+                  << "Output channels: " << output_channels_ << '\n';
 
     min_.resize(output_channels_, MAX_SAMPLE);
     max_.resize(output_channels_, MIN_SAMPLE);
@@ -211,7 +211,7 @@ void WaveformGenerator::done()
         reset();
     }
 
-    error_stream << "Generated " << buffer_.getSize() << " points\n";
+    output_stream << "Generated " << buffer_.getSize() << " points\n";
 }
 
 //------------------------------------------------------------------------------

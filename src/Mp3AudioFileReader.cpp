@@ -365,8 +365,8 @@ bool Mp3AudioFileReader::open(const char* filename, bool show_info)
         }
     }
 
-    error_stream << "Input file: "
-                 << FileUtil::getInputFilename(filename) << '\n';
+    output_stream << "Input file: "
+                  << FileUtil::getInputFilename(filename) << '\n';
 
     return true;
 }
@@ -615,8 +615,8 @@ bool Mp3AudioFileReader::run(AudioProcessor& processor)
                     // This seems to be OK, so don't print these
 
                     if (frame_count != 0) {
-                        error_stream << "\nRecoverable frame level error: "
-                                     << mad_stream_errorstr(&stream) << '\n';
+                        output_stream << "\nRecoverable frame level error: "
+                                      << mad_stream_errorstr(&stream) << '\n';
                     }
                 }
 
@@ -704,7 +704,7 @@ bool Mp3AudioFileReader::run(AudioProcessor& processor)
             channels = MAD_NCHANNELS(&frame.header);
 
             if (show_info_) {
-                showInfo(error_stream, frame.header, gapless_playback_info);
+                showInfo(output_stream, frame.header, gapless_playback_info);
             }
 
             if (!processor.init(sample_rate, channels, 0, OUTPUT_BUFFER_SIZE)) {
@@ -816,8 +816,8 @@ bool Mp3AudioFileReader::run(AudioProcessor& processor)
         mad_timer_string(timer, buffer, "%lu:%02lu.%03u",
             MAD_UNITS_MINUTES, MAD_UNITS_MILLISECONDS, 0);
 
-        error_stream << "\nFrames decoded: " << frame_count
-                     << " (" << buffer << ")\n";
+        output_stream << "\nFrames decoded: " << frame_count
+                      << " (" << buffer << ")\n";
     }
 
     if (started) {

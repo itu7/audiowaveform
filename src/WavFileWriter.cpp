@@ -55,8 +55,8 @@ bool WavFileWriter::init(
     const long /* frame_count */,
     const int buffer_size)
 {
-    error_stream << "Output file: "
-                 << FileUtil::getOutputFilename(output_filename_.c_str()) << '\n';
+    output_stream << "Output file: "
+                  << FileUtil::getOutputFilename(output_filename_.c_str()) << '\n';
 
     channels_    = channels;
     buffer_size_ = buffer_size;

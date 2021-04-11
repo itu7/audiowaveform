@@ -75,8 +75,7 @@ TEST_F(SndFileAudioFileReaderTest, shouldOpenWavFile)
     bool result = reader_.open("../test/data/test_file_stereo.wav");
     ASSERT_TRUE(result);
 
-    ASSERT_THAT(output.str(), StrEq(""));
-    ASSERT_THAT(error.str(), StrEq(
+    ASSERT_THAT(output.str(), StrEq(
         "Input file: ../test/data/test_file_stereo.wav\n"
         "Frames: 113519\n"
         "Sample rate: 16000 Hz\n"
@@ -85,6 +84,7 @@ TEST_F(SndFileAudioFileReaderTest, shouldOpenWavFile)
         "Sections: 1\n"
         "Seekable: yes\n"
     ));
+    ASSERT_THAT(error.str(), StrEq(""));
 }
 
 //------------------------------------------------------------------------------
@@ -94,8 +94,7 @@ TEST_F(SndFileAudioFileReaderTest, shouldOpenFlacFile)
     bool result = reader_.open("../test/data/test_file_stereo.flac");
     ASSERT_TRUE(result);
 
-    ASSERT_THAT(output.str(), StrEq(""));
-    ASSERT_THAT(error.str(), StrEq(
+    ASSERT_THAT(output.str(), StrEq(
         "Input file: ../test/data/test_file_stereo.flac\n"
         "Frames: 113519\n"
         "Sample rate: 16000 Hz\n"
@@ -104,6 +103,7 @@ TEST_F(SndFileAudioFileReaderTest, shouldOpenFlacFile)
         "Sections: 1\n"
         "Seekable: yes\n"
     ));
+    ASSERT_THAT(error.str(), StrEq(""));
 }
 
 //------------------------------------------------------------------------------
@@ -190,8 +190,8 @@ static void testProcessStereo(const std::string& filename, const std::string& fo
         "Read 113519 frames\n"
     );
 
-    ASSERT_THAT(output.str(), StrEq(""));
-    ASSERT_THAT(error.str(), StrEq(expected_output));
+    ASSERT_THAT(output.str(), StrEq(expected_output));
+    ASSERT_THAT(error.str(), StrEq(""));
 }
 
 //------------------------------------------------------------------------------
@@ -253,8 +253,8 @@ static void testProcessMono(const std::string& filename, const std::string& form
         "Read 113519 frames\n"
     );
 
-    ASSERT_THAT(output.str(), StrEq(""));
-    ASSERT_THAT(error.str(), StrEq(expected_output));
+    ASSERT_THAT(output.str(), StrEq(expected_output));
+    ASSERT_THAT(error.str(), StrEq(""));
 }
 
 //------------------------------------------------------------------------------
@@ -294,7 +294,7 @@ TEST_F(SndFileAudioFileReaderTest, shouldNotProcessFileMoreThanOnce)
     ASSERT_TRUE(result);
 
     // Attempting to process the file again should fail
-    error.str(std::string());
+    output.str(std::string());
 
     result = reader_.run(processor);
     ASSERT_FALSE(result);

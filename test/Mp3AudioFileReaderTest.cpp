@@ -68,10 +68,10 @@ TEST_F(Mp3AudioFileReaderTest, shouldOpenMp3File)
     bool result = reader_.open("../test/data/test_file_stereo.mp3");
     ASSERT_TRUE(result);
 
-    ASSERT_THAT(output.str(), StrEq(""));
-    ASSERT_THAT(error.str(), StrEq(
+    ASSERT_THAT(output.str(), StrEq(
         "Input file: ../test/data/test_file_stereo.mp3\n"
     ));
+    ASSERT_THAT(error.str(), StrEq(""));
 }
 
 //------------------------------------------------------------------------------
@@ -129,8 +129,7 @@ TEST_F(Mp3AudioFileReaderTest, shouldProcessStereoMp3File)
     bool result = reader_.run(processor);
     ASSERT_TRUE(result);
 
-    ASSERT_THAT(output.str(), StrEq(""));
-    ASSERT_THAT(error.str(), StrEq(
+    ASSERT_THAT(output.str(), StrEq(
         "Input file: ../test/data/test_file_stereo.mp3\n"
         "Format: Audio MPEG layer III stream\n"
         "Bit rate: 128000 kbit/s\n"
@@ -146,6 +145,7 @@ TEST_F(Mp3AudioFileReaderTest, shouldProcessStereoMp3File)
         "\rDone: 100%\n"
         "Frames decoded: 199 (0:07.164)\n"
     ));
+    ASSERT_THAT(error.str(), StrEq(""));
 }
 
 //------------------------------------------------------------------------------
@@ -169,8 +169,7 @@ TEST_F(Mp3AudioFileReaderTest, shouldProcessMonoMp3File)
     bool result = reader_.run(processor);
     ASSERT_TRUE(result);
 
-    ASSERT_THAT(output.str(), StrEq(""));
-    ASSERT_THAT(error.str(), StrEq(
+    ASSERT_THAT(output.str(), StrEq(
         "Input file: ../test/data/test_file_mono.mp3\n"
         "Format: Audio MPEG layer III stream\n"
         "Bit rate: 128000 kbit/s\n"
@@ -186,6 +185,7 @@ TEST_F(Mp3AudioFileReaderTest, shouldProcessMonoMp3File)
         "\rDone: 100%\n"
         "Frames decoded: 200 (0:07.200)\n"
     ));
+    ASSERT_THAT(error.str(), StrEq(""));
 }
 
 //------------------------------------------------------------------------------
@@ -209,8 +209,7 @@ TEST_F(Mp3AudioFileReaderTest, shouldProcessMp3FileWithId3Tags)
     bool result = reader_.run(processor);
     ASSERT_TRUE(result);
 
-    ASSERT_THAT(output.str(), StrEq(""));
-    ASSERT_THAT(error.str(), StrEq(
+    ASSERT_THAT(output.str(), StrEq(
         "Input file: ../test/data/cl_T_01.mp3\n"
         "Format: Audio MPEG layer III stream\n"
         "Bit rate: 96000 kbit/s\n"
@@ -224,6 +223,7 @@ TEST_F(Mp3AudioFileReaderTest, shouldProcessMp3FileWithId3Tags)
         "\rDone: 100%\n"
         "Frames decoded: 27 (0:00.705)\n"
     ));
+    ASSERT_THAT(error.str(), StrEq(""));
 }
 
 //------------------------------------------------------------------------------
@@ -328,7 +328,7 @@ TEST_F(Mp3AudioFileReaderTest, shouldNotProcessFileMoreThanOnce)
     bool result = reader_.run(processor);
 
     // Attempting to process the file again should fail
-    error.str(std::string());
+    output.str(std::string());
 
     result = reader_.run(processor);
     ASSERT_FALSE(result);

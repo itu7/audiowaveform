@@ -34,8 +34,8 @@ static_assert(std::numeric_limits<int>::max() >= 2147483647L, "size of int");
 
 //------------------------------------------------------------------------------
 
-std::ostream& output_stream = std::cout;
-std::ostream& error_stream  = std::cerr;
+std::ostream& output_stream  = std::clog;
+std::ostream& error_stream   = std::cerr;
 
 //------------------------------------------------------------------------------
 

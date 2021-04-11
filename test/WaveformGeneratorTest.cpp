@@ -179,11 +179,11 @@ TEST_F(WaveformGeneratorTest, shouldSucceedIfSamplesPerPixelIsTwo)
 
     ASSERT_TRUE(result);
 
-    ASSERT_TRUE(output.str().empty());
+    ASSERT_TRUE(error.str().empty());
 
-    std::string error_str = error.str();
-    ASSERT_THAT(error_str, StartsWith("Generating waveform data"));
-    ASSERT_THAT(error_str, EndsWith("\n"));
+    std::string output_str = output.str();
+    ASSERT_THAT(output_str, StartsWith("Generating waveform data"));
+    ASSERT_THAT(output_str, EndsWith("\n"));
 }
 
 //------------------------------------------------------------------------------
@@ -202,11 +202,11 @@ TEST_F(WaveformGeneratorTest, shouldSucceedIfSamplesPerPixelIsLarge)
 
     ASSERT_TRUE(result);
 
-    ASSERT_TRUE(output.str().empty());
+    ASSERT_TRUE(error.str().empty());
 
-    std::string error_str = error.str();
-    ASSERT_THAT(error_str, StartsWith("Generating waveform data"));
-    ASSERT_THAT(error_str, EndsWith("\n"));
+    std::string output_str = output.str();
+    ASSERT_THAT(output_str, StartsWith("Generating waveform data"));
+    ASSERT_THAT(output_str, EndsWith("\n"));
 }
 
 //------------------------------------------------------------------------------
@@ -226,11 +226,11 @@ TEST_F(WaveformGeneratorTest, shouldSucceedIfEndTimeGreaterThanStartTime)
 
     ASSERT_TRUE(result);
 
-    ASSERT_TRUE(output.str().empty());
+    ASSERT_TRUE(error.str().empty());
 
-    std::string error_str = error.str();
-    ASSERT_THAT(error_str, StartsWith("Generating waveform data"));
-    ASSERT_THAT(error_str, EndsWith("\n"));
+    std::string output_str = output.str();
+    ASSERT_THAT(output_str, StartsWith("Generating waveform data"));
+    ASSERT_THAT(output_str, EndsWith("\n"));
 
     ASSERT_THAT(generator.getSamplesPerPixel(), Eq(441));
     ASSERT_THAT(buffer.getSampleRate(), Eq(44100));
@@ -276,11 +276,11 @@ TEST_F(WaveformGeneratorTest, shouldSetBufferAttributes)
 
     ASSERT_TRUE(result);
 
-    ASSERT_TRUE(output.str().empty());
+    ASSERT_TRUE(error.str().empty());
 
-    std::string error_str = error.str();
-    ASSERT_THAT(error_str, StartsWith("Generating waveform data"));
-    ASSERT_THAT(error_str, EndsWith("\n"));
+    std::string output_str = output.str();
+    ASSERT_THAT(output_str, StartsWith("Generating waveform data"));
+    ASSERT_THAT(output_str, EndsWith("\n"));
 
     ASSERT_THAT(buffer.getSampleRate(), Eq(44100));
     ASSERT_THAT(buffer.getSamplesPerPixel(), Eq(300));
@@ -310,11 +310,11 @@ TEST_F(WaveformGeneratorTest, shouldComputeMaxAndMinValuesFromStereoInput)
 
     ASSERT_TRUE(result);
 
-    ASSERT_TRUE(output.str().empty());
+    ASSERT_TRUE(error.str().empty());
 
-    std::string error_str = error.str();
-    ASSERT_THAT(error_str, StartsWith("Generating waveform data..."));
-    ASSERT_THAT(error_str, EndsWith("\n"));
+    std::string output_str = output.str();
+    ASSERT_THAT(output_str, StartsWith("Generating waveform data..."));
+    ASSERT_THAT(output_str, EndsWith("\n"));
 
     // even indexes: left channel, odd indexes: right channel
     samples[0] = 100;
@@ -378,11 +378,11 @@ TEST_F(WaveformGeneratorTest, shouldComputeMaxAndMinValuesFromMonoInput)
 
     ASSERT_TRUE(result);
 
-    ASSERT_TRUE(output.str().empty());
+    ASSERT_TRUE(error.str().empty());
 
-    std::string error_str = error.str();
-    ASSERT_THAT(error_str, StartsWith("Generating waveform data..."));
-    ASSERT_THAT(error_str, EndsWith("\n"));
+    std::string output_str = output.str();
+    ASSERT_THAT(output_str, StartsWith("Generating waveform data..."));
+    ASSERT_THAT(output_str, EndsWith("\n"));
 
     // samples for first waveform data point
     samples[0] = 100;

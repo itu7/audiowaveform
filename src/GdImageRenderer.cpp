@@ -137,15 +137,15 @@ bool GdImageRenderer::create(
     amplitude_scale_      = amplitude_scale;
     channels_             = buffer.getChannels();
 
-    error_stream << "Image dimensions: " << image_width_ << "x" << image_height_ << " pixels"
-                 << "\nChannels: " << channels_
-                 << "\nSample rate: " << sample_rate_ << " Hz"
-                 << "\nSamples per pixel: " << samples_per_pixel_
-                 << "\nStart time: " << start_time_ << " seconds"
-                 << "\nStart index: " << start_index_
-                 << "\nBuffer size: " << buffer.getSize()
-                 << "\nAxis labels: " << (render_axis_labels_ ? "yes" : "no")
-                 << "\n";
+    output_stream << "Image dimensions: " << image_width_ << "x" << image_height_ << " pixels"
+                  << "\nChannels: " << channels_
+                  << "\nSample rate: " << sample_rate_ << " Hz"
+                  << "\nSamples per pixel: " << samples_per_pixel_
+                  << "\nStart time: " << start_time_ << " seconds"
+                  << "\nStart index: " << start_index_
+                  << "\nBuffer size: " << buffer.getSize()
+                  << "\nAxis labels: " << (render_axis_labels_ ? "yes" : "no")
+                  << "\n";
 
     if (colors.hasAlpha()) {
         gdImageSaveAlpha(image_, 1);
@@ -236,7 +236,7 @@ void GdImageRenderer::drawWaveform(const WaveformBuffer& buffer) const
         amplitude_scale = amplitude_scale_;
     }
 
-    error_stream << "Amplitude scale: " << amplitude_scale << '\n';
+    output_stream << "Amplitude scale: " << amplitude_scale << '\n';
 
     const int channels = buffer.getChannels();
 
@@ -401,8 +401,8 @@ bool GdImageRenderer::saveAsPng(
         }
     }
 
-    error_stream << "Output file: "
-                 << FileUtil::getOutputFilename(filename) << '\n';
+    output_stream << "Output file: "
+                  << FileUtil::getOutputFilename(filename) << '\n';
 
     gdImagePngEx(image_, output_file, compression_level);
 

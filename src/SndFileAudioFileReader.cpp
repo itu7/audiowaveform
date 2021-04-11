@@ -88,11 +88,11 @@ bool SndFileAudioFileReader::open(const char* input_filename, bool show_info)
         }
     }
 
-    error_stream << "Input file: "
-                 << FileUtil::getInputFilename(input_filename) << '\n';
+    output_stream << "Input file: "
+                  << FileUtil::getInputFilename(input_filename) << '\n';
 
     if (show_info) {
-        showInfo(error_stream, info_);
+        showInfo(output_stream, info_);
     }
 
     return true;
@@ -175,7 +175,7 @@ bool SndFileAudioFileReader::run(AudioProcessor& processor)
             progress_reporter.update(total_frames_read, info_.frames);
         }
 
-        error_stream << "\nRead " << total_frames_read << " frames\n";
+        output_stream << "\nRead " << total_frames_read << " frames\n";
 
         processor.done();
     }

@@ -164,8 +164,8 @@ bool WaveformBuffer::load(const char* filename)
             file.open(filename, std::ios::in | std::ios::binary);
         }
 
-        error_stream << "Input file: "
-                     << FileUtil::getInputFilename(filename) << '\n';
+        output_stream << "Input file: "
+                      << FileUtil::getInputFilename(filename) << '\n';
 
         const int32_t version = readInt32(*input);
 
@@ -224,11 +224,11 @@ bool WaveformBuffer::load(const char* filename)
             }
         }
 
-        error_stream << "Channels: " << channels_
-                     << "\nSample rate: " << sample_rate_ << " Hz"
-                     << "\nBits: " << bits_
-                     << "\nSamples per pixel: " << samples_per_pixel_
-                     << "\nLength: " << getSize() << " points" << std::endl;
+        output_stream << "Channels: " << channels_
+                      << "\nSample rate: " << sample_rate_ << " Hz"
+                      << "\nBits: " << bits_
+                      << "\nSamples per pixel: " << samples_per_pixel_
+                      << "\nLength: " << getSize() << " points" << std::endl;
 
         if (samples_per_pixel_ < 2) {
             reportReadError(
@@ -307,8 +307,8 @@ static bool openOutputStream(const char* filename, bool binary, Writer writer)
             file.open(filename, openMode);
         }
 
-        error_stream << "Output file: "
-                     << FileUtil::getOutputFilename(filename) << '\n';
+        output_stream << "Output file: "
+                      << FileUtil::getOutputFilename(filename) << '\n';
 
         writer(*output);
     }
@@ -330,8 +330,8 @@ bool WaveformBuffer::save(const char* filename, const int bits) const
     }
 
     return openOutputStream(filename, true, [this, bits](std::ostream& output) {
-        error_stream << "Resolution: " << bits << " bits\n"
-                     << "Channels: " << channels_ << std::endl;
+        output_stream << "Resolution: " << bits << " bits\n"
+                      << "Channels: " << channels_ << std::endl;
 
         save(output, bits);
     });

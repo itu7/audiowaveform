@@ -90,9 +90,9 @@ void GdImageRendererTest::testImageRendering(bool axis_labels, const std::string
     ASSERT_THAT(error_code, Eq(boost::system::errc::success));
     ASSERT_THAT(size, Gt(0U));
 
-    ASSERT_THAT(output.str(), StrEq(""));
-    ASSERT_THAT(error.str(), StartsWith(expected_output));
-    ASSERT_THAT(error.str(), EndsWith(".png\n"));
+    ASSERT_THAT(output.str(), StartsWith(expected_output));
+    ASSERT_THAT(output.str(), EndsWith(".png\n"));
+    ASSERT_THAT(error.str(), StrEq(""));
 }
 
 //------------------------------------------------------------------------------
